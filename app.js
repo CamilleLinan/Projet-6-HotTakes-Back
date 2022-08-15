@@ -24,7 +24,6 @@ app.use((req, res, next) => {
 app.use('/api/auth', userRoutes);
 
 app.post('/api/sauces', (req, res, next) => {
-    delete req.body._id;
     const sauce = new Sauce({
         ...req.body
     });
