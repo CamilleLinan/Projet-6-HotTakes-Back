@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
 
 const userRoutes = require('./routes/user');
@@ -9,6 +10,8 @@ mongoose.connect('mongodb+srv://CamLin:HTdfd25kkhwCZKa@cluster0.e9fmqr1.mongodb.
         .then(() => console.log('Connexion à MongoDB réussie !'))
         .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+app.use(express.json());
+
 const app = express();
 
 app.use((req, res, next) => {
@@ -18,13 +21,30 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(express.json());
-
 app.use('/api/auth', userRoutes);
 
-/* app.use((req, res, next) => {
-    console.log('Requête reçue !');
-    next();
-}); */
+app.post('/api/sauces', (req, res, next) => {
+    console.log(req.body);
+    res.status(201).json({ message: 'Objet créé !' });
+});
+
+app.get('/api/sauces', (req, res, next) => {
+    const sauces = [
+        {
+            userId: '',
+            name: 'Nom de la sauce',
+            manufactured: 'Fabriquant de la sauce',
+            description: 'Description de la sauce',
+            mainPepper: 'Ingrédient piquant principal de la sauce',
+            imageUrl: '',
+            heat: 'Nbr entre 1 et 10 indiquant la force de la sauce',
+            likes: 'Nbr de users qui like la sauce',
+            dislikes: 'Nbr de users qui like pas la sauce',
+            usersLiked: '',
+            usersDisliked: '',
+        },
+    ];
+    res.status(200).json(sauces);
+});
 
 module.exports = app;
