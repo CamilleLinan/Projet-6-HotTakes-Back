@@ -9,8 +9,7 @@ mongoose.connect('mongodb+srv://CamLin:HTdfd25kkhwCZKa@cluster0.e9fmqr1.mongodb.
     useUnifiedTopology: true })
         .then(() => console.log('Connexion à MongoDB réussie !'))
         .catch(() => console.log('Connexion à MongoDB échouée !'));
-
-app.use(express.json());
+;
 
 const app = express();
 
@@ -21,13 +20,15 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.json());
+
 app.use('/api/auth', userRoutes);
 
 app.post('/api/sauces', (req, res, next) => {
     const sauce = new Sauce({
         ...req.body
     });
-    thing.save()
+    sauce.save()
         .then(() => res.status(201).json({ message: 'Objet enregistré !' }))
         .catch(error => res.status(400).json({ error }));
 });
