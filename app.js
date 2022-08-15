@@ -2,9 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 
-const saucesRoutes = require('./routes/sauces');
+// Création de l'app Express
+const app = express();
+
+// Import des routes
+const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
 
+// Connection à la base de données MongoDB
 mongoose.connect('mongodb+srv://CamLin:HTdfd25kkhwCZKa@cluster0.e9fmqr1.mongodb.net/?retryWrites=true&w=majority',
     { useNewUrlParser: true,
     useUnifiedTopology: true })
@@ -12,8 +17,7 @@ mongoose.connect('mongodb+srv://CamLin:HTdfd25kkhwCZKa@cluster0.e9fmqr1.mongodb.
         .catch(() => console.log('Connexion à MongoDB échouée !'));
 ;
 
-const app = express();
-
+// Headers pour contourner les erreurs de CORS
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -21,10 +25,12 @@ app.use((req, res, next) => {
     next();
 });
 
+// Conversion de la requête
 app.use(express.json());
 
+// Routes de l'API
 app.use('/api/auth', userRoutes);
-app.use('/api/sauces', saucesRoutes);
+app.use('/api/sauces', sauceRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
