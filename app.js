@@ -1,7 +1,7 @@
 const express = require('express');
-const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
 
+const Sauce = require('./models/Sauce');
 const userRoutes = require('./routes/user');
 
 mongoose.connect('mongodb+srv://CamLin:HTdfd25kkhwCZKa@cluster0.e9fmqr1.mongodb.net/?retryWrites=true&w=majority',
@@ -24,27 +24,19 @@ app.use((req, res, next) => {
 app.use('/api/auth', userRoutes);
 
 app.post('/api/sauces', (req, res, next) => {
-    console.log(req.body);
-    res.status(201).json({ message: 'Objet créé !' });
+    delete req.body._id;
+    const sauce = new Sauce({
+        ...req.body
+    });
+    thing.save()
+        .then(() => res.status(201).json({ message: 'Objet enregistré !' }))
+        .catch(error => res.status(400).json({ error }));
 });
 
 app.get('/api/sauces', (req, res, next) => {
-    const sauces = [
-        {
-            userId: '',
-            name: 'Nom de la sauce',
-            manufactured: 'Fabriquant de la sauce',
-            description: 'Description de la sauce',
-            mainPepper: 'Ingrédient piquant principal de la sauce',
-            imageUrl: '',
-            heat: 'Nbr entre 1 et 10 indiquant la force de la sauce',
-            likes: 'Nbr de users qui like la sauce',
-            dislikes: 'Nbr de users qui like pas la sauce',
-            usersLiked: '',
-            usersDisliked: '',
-        },
-    ];
-    res.status(200).json(sauces);
+    Sauce.find()
+        .then(sauces => res.status(200).json(sauces))
+        .catch(error => res.status(400).json({ error }));
 });
 
 module.exports = app;
