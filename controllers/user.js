@@ -1,8 +1,10 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+// Import du modèle User
 const User = require('../models/User');
 
+// Utilisation de email-validator
 const emailValidator = require('email-validator');
 
 // Créer un compte utilisateur
