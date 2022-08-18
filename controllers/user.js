@@ -7,6 +7,11 @@ const User = require('../models/User');
 // Utilisation de email-validator
 const emailValidator = require('email-validator');
 
+// Utilisation de password-validator
+const passwordValidator = require('password-validator');
+
+
+
 // Créer un compte utilisateur
 exports.signup = (req, res, next) => {
     if (emailValidator.validate(req.body.email)) {
