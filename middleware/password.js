@@ -11,9 +11,6 @@ passwordSchema
 .has().digits(1)
 .has().not().spaces();
 
-console.log('Contenu passwordSchema : ');
-console.log(passwordSchema);
-
 module.exports = (req, res, next) => {
     if (passwordSchema.validate(req.body.password)) {
         next();
