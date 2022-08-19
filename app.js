@@ -1,6 +1,8 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const path = require('path');
+
+// Importation de mongoose
+const mongoose = require('./mongo-connect');
 
 // Création de l'app Express
 const app = express();
@@ -8,21 +10,6 @@ const app = express();
 // Import des routes
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
-
-// Utilisation de dotenv
-const dotenv = require('dotenv');
-dotenv.config();
-const MONGO_USERNAME = process.env.MONGO_USERNAME;
-const MONGO_PASSWORD = process.env.MONGO_PASSWORD;
-const MONGO_CLUSTER = process.env.MONGO_CLUSTER;
-
-// Connection à la base de données MongoDB
-mongoose.connect((`mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}${MONGO_CLUSTER}.mongodb.net/?retryWrites=true&w=majority`),
-    { useNewUrlParser: true,
-    useUnifiedTopology: true })
-        .then(() => console.log('Connexion à MongoDB réussie !'))
-        .catch(() => console.log('Connexion à MongoDB échouée !'));
-;
 
 // Headers pour contourner les erreurs de CORS
 app.use((req, res, next) => {
