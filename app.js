@@ -8,8 +8,8 @@ const mongoose = require('./mongo-connect');
 const app = express();
 
 // Import des routes
-const sauceRoutes = require('./routes/sauce');
-const userRoutes = require('./routes/user');
+const sauceRoutes = require('./routes/sauce-routes');
+const userRoutes = require('./routes/user-routes');
 
 // Headers pour contourner les erreurs de CORS
 app.use((req, res, next) => {

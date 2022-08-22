@@ -1,5 +1,5 @@
 const passwordValidator = require('password-validator');
-const { schema } = require('../models/User');
+const { schema } = require('../models/User-model');
 
 const passwordSchema = new passwordValidator();
 

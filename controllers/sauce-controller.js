@@ -1,5 +1,5 @@
 // Import du modèle de sauce
-const Sauce = require('../models/Sauce');
+const Sauce = require('../models/Sauce-model');
 // Package FileSystem pour modifier le système de donnée pour la fonction deleteSauce
 const fs = require('fs');
 
