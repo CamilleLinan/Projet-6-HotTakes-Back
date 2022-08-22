@@ -71,3 +71,59 @@ exports.getAllSauces = (req, res, next) => {
         .then(sauces => res.status(200).json(sauces))
         .catch(error => res.status(404).json({ error }));
 };
+
+// Évaluer une sauce
+exports.evaluateSauce = (req, res, next) => {
+    Sauce.findOne({ _id: req.params.id })
+        .then(sauce => {
+            switch (req.body.like) {
+                // Si la sauce n'est plus aimée
+                case -1:
+                    Sauce.updateOne({ _id: req.params.id }, {
+                        $inc: { dislikes: 1 },
+                        $push: { usersDisliked: req.body.userId },
+                        _id: req.params.id
+                    })
+                        .then(() => res.status(201).json({ message: "Votre avis est bien pris en compte (dislike) !" }))
+                        .catch(error => res.status(400).json({ error }))
+                    break;
+                
+                case 0:
+                    // Si la sauce est déjà aimée
+                    if (sauce.usersLiked.find(user => user === req.body.userId)) {
+                        Sauce.updateOne({ _id: req.params.id }, {
+                            $inc: { likes: -1 },
+                            $pull: { usersLiked: req.body.userId },
+                            _id: req.params.id
+                        })
+                            .then(() => res.status(201).json({ message: "Votre avis a bien été modifié !" }))
+                            .catch(error => res.status(400).json({ error }))
+                    }
+
+                    // Si la sauce n'est déjà pas aimée
+                    if (sauce.usersDisliked.find(user => user === req.body.userId)) {
+                        Sauce.updateOne({ _id: req.params.id }, {
+                            $inc: { dislikes: -1 },
+                            $pull: { usersDisliked: req.body.userId },
+                            _id: req.params.id
+                        })
+                            .then(() => res.status(201).json({ message: "Votre avis a bien été modifié !" }))
+                            .catch(error => res.status(400).json({ error }))
+                    }
+                    break;
+
+                case 1:
+                    Sauce.updateOne({ _id: req.params.id }, {
+                        $inc: { likes: 1 },
+                        $push: { usersLiked: req.body.userId },
+                        _id: req.params.id
+                    })
+                        .then(() => res.status(201).json({ message: "Votre avis est bien pris en compte (like) !" }))
+                        .catch(error => res.status(400).json({ error }))
+                    break;
+                default:
+                    return res.status(500).json({ error });
+            }
+        })
+        .catch(error => res.status(500).json({ error }));
+}
