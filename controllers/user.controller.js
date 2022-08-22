@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const emailValidator = require('email-validator');
 
 // Import du modèle User
-const User = require('../models/User-model');
+const User = require('../models/User.model');
 
 // Utilisation de dotenv
 const dotenv = require('dotenv');
