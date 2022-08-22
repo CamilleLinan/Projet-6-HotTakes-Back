@@ -1,5 +1,4 @@
 const cryptojs = require('crypto-js');
-const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const emailValidator = require('email-validator');
@@ -7,8 +6,11 @@ const emailValidator = require('email-validator');
 // Import du modèle User
 const User = require('../models/User-model');
 
+// Utilisation de dotenv
+const dotenv = require('dotenv');
 dotenv.config();
 const CRYPTOJS_EMAIL = process.env.CRYPTOJS_EMAIL;
+const SECRET_TOKEN = process.env.SECRET_TOKEN;
 
 // Créer un compte utilisateur
 exports.signup = (req, res, next) => {
@@ -50,7 +52,7 @@ exports.login = (req, res, next) => {
                                 userId: user._id, 
                                 token: jwt.sign(
                                     { userId: user._id },
-                                    'SECRET_TOKEN',
+                                    SECRET_TOKEN,
                                     { expiresIn: '24h' }
                                 )
                             });
